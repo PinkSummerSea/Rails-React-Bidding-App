@@ -8,6 +8,8 @@ const AuctionShowPage = () => {
   const [auction, setAuction] = useState({})
   const [bids, setBids] = useState([])
   const [priceMet, setPriceMet] = useState("not met")
+  const [newBidPrice, setNewBidPrice] = useState()
+
   let {id} = useParams()
 
   useEffect(() => {
@@ -20,7 +22,24 @@ const AuctionShowPage = () => {
 
   useEffect(() => {
     Math.max(...bids.map(b => b.price)) >= auction.reserve_price && setPriceMet("has been met") 
-  }, [auction])
+  }, [auction, bids])
+
+  const handleChange = (event) => {
+    setNewBidPrice(event.target.value)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    axios.post(`http://localhost:3000/auctions/${id}/bids`,{
+      bid: {
+        price: newBidPrice
+      }
+    }, {withCredentials: true})
+      .then(res => {
+        console.log(res)
+        setBids([res.data.bid, ...bids])
+      })
+  }
   
   return (
     <>
@@ -29,6 +48,15 @@ const AuctionShowPage = () => {
         <h3>Ends at: {dateFormat(auction.end_date, "mmmm dS, yyyy")}</h3>
         <h3>Reserve Price: ${auction.reserve_price}</h3>
         <h3>Reserve Price {priceMet}</h3>
+        <form onSubmit={handleSubmit}>
+          <input 
+            name="price"
+            type="text"
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Bid</button>
+        </form>
         <h5>Previous Bids</h5>
         {bids.map(b => (
             <p key={b.id}>

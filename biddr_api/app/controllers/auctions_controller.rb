@@ -1,10 +1,12 @@
 class AuctionsController < ApplicationController
 
     before_action :authenticate_user!, except: [:index, :show]
-    
+
+    include CurrentUserConcern
+
     def create
         auction = Auction.new(params.require(:auction).permit!)
-        auction.user = current_user
+        auction.user = @current_user
         if auction.save
             render json: {id: auction.id}
         else  
