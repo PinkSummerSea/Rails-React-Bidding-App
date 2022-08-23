@@ -1,0 +1,18 @@
+class AuctionSerializer < ActiveModel::Serializer
+  attributes :id, :title, :description, :end_date
+
+  has_many :bids
+  belongs_to :user
+
+  class BidSerializer < ActiveModel::Serializer
+    attributes :id, :price, :bidder
+
+    def bidder
+      object.user&.name
+    end
+  end
+
+  class UserSerializer < ActiveModel::Serializer
+    attributes :id, :name, :email
+  end
+end

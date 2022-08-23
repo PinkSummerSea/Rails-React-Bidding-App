@@ -1,0 +1,558 @@
+  [1m[35m (125.1ms)[0m  [1m[35mCREATE DATABASE "biddr_api_development" ENCODING = 'unicode'[0m
+  [1m[35m (37.3ms)[0m  [1m[35mCREATE DATABASE "biddr_api_test" ENCODING = 'unicode'[0m
+  [1m[35m (20.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateAuctions (20220823164146)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.8ms)[0m  [1m[35mCREATE TABLE "auctions" ("id" bigserial primary key, "title" character varying, "description" text, "end_date" date, "reserve_price" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20220823164146"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (1.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2022-08-23 16:54:05.801494"], ["updated_at", "2022-08-23 16:54:05.801494"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateBids (20220823165952)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.0ms)[0m  [1m[35mCREATE TABLE "bids" ("id" bigserial primary key, "auction_id" bigint NOT NULL, "price" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_7332d1a025"
+FOREIGN KEY ("auction_id")
+  REFERENCES "auctions" ("id")
+)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_bids_on_auction_id" ON "bids" ("auction_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20220823165952"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20220823171155)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "name" character varying, "email" character varying, "password_digest" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20220823171155"]]
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (3.4ms)[0m  [1m[34mSELECT pg_advisory_unlock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddUserToAuctions (20220823171855)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.9ms)[0m  [1m[35mALTER TABLE "auctions" ADD "user_id" bigint NOT NULL[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE INDEX "index_auctions_on_user_id" ON "auctions" ("user_id")[0m
+  [1m[35m (2.7ms)[0m  [1m[35mALTER TABLE "auctions" ADD CONSTRAINT "fk_rails_a21a834151"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20220823171855"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddUserToBids (20220823171909)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "bids" ADD "user_id" bigint NOT NULL[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_bids_on_user_id" ON "bids" ("user_id")[0m
+  [1m[35m (1.2ms)[0m  [1m[35mALTER TABLE "bids" ADD CONSTRAINT "fk_rails_e173de2ed3"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20220823171909"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(8427587142396744315)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2022-08-23 11:13:22 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.1ms | Allocations: 752)
+Completed 200 OK in 10ms (Views: 4.1ms | ActiveRecord: 0.0ms | Allocations: 7178)
+
+
+Started GET "/rails/info/routes" for ::1 at 2022-08-23 11:14:04 -0700
+Processing by Rails::InfoController#routes as HTML
+  Rendering layout /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/layouts/application.html.erb
+  Rendering /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application
+  Rendered collection of /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/actionpack-7.0.3.1/lib/action_dispatch/middleware/templates/routes/_route.html.erb [38 times] (Duration: 5.2ms | Allocations: 6296)
+  Rendered /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/actionpack-7.0.3.1/lib/action_dispatch/middleware/templates/routes/_table.html.erb (Duration: 2.3ms | Allocations: 1542)
+  Rendered /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application (Duration: 9.4ms | Allocations: 11674)
+  Rendered layout /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/layouts/application.html.erb (Duration: 10.0ms | Allocations: 12021)
+Completed 200 OK in 11ms (Views: 10.7ms | ActiveRecord: 0.0ms | Allocations: 13177)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:18:48 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"email"=>"biddr1@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (2.2ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", nil], ["email", "biddr1@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:18:49.082010"], ["updated_at", "2022-08-23 18:18:49.082010"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.05ms)
+Completed 200 OK in 276ms (Views: 3.6ms | ActiveRecord: 7.9ms | Allocations: 13926)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:19:17 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"email"=>"biddr2@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", nil], ["email", "biddr2@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:19:17.469378"], ["updated_at", "2022-08-23 18:19:17.469378"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 264ms (Views: 0.6ms | ActiveRecord: 1.1ms | Allocations: 2750)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:19:20 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"email"=>"biddr3@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", nil], ["email", "biddr3@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:19:21.243896"], ["updated_at", "2022-08-23 18:19:21.243896"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 271ms (Views: 0.6ms | ActiveRecord: 1.4ms | Allocations: 2735)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:19:26 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"email"=>"biddr4@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", nil], ["email", "biddr4@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:19:26.424468"], ["updated_at", "2022-08-23 18:19:26.424468"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 264ms (Views: 0.6ms | ActiveRecord: 2.2ms | Allocations: 2731)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:19:29 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"email"=>"biddr5@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", nil], ["email", "biddr5@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:19:29.705533"], ["updated_at", "2022-08-23 18:19:29.705533"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 268ms (Views: 0.6ms | ActiveRecord: 1.4ms | Allocations: 2711)
+
+
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAuction Load (1.4ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mBid Load (1.5ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."user_id" = $1[0m  [["user_id", 1]]
+  [1m[36mUser Destroy (0.8ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 1]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAuction Load (0.1ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."user_id" = $1[0m  [["user_id", 2]]
+  [1m[36mBid Load (0.1ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."user_id" = $1[0m  [["user_id", 2]]
+  [1m[36mUser Destroy (0.3ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 2]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAuction Load (0.1ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."user_id" = $1[0m  [["user_id", 3]]
+  [1m[36mBid Load (0.1ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."user_id" = $1[0m  [["user_id", 3]]
+  [1m[36mUser Destroy (0.2ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 3]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAuction Load (0.2ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."user_id" = $1[0m  [["user_id", 4]]
+  [1m[36mBid Load (0.1ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."user_id" = $1[0m  [["user_id", 4]]
+  [1m[36mUser Destroy (0.3ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 4]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mAuction Load (0.1ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."user_id" = $1[0m  [["user_id", 5]]
+  [1m[36mBid Load (0.1ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."user_id" = $1[0m  [["user_id", 5]]
+  [1m[36mUser Destroy (0.2ms)[0m  [1m[31mDELETE FROM "users" WHERE "users"."id" = $1[0m  [["id", 5]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+Started POST "/users" for ::1 at 2022-08-23 11:21:08 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"biddr1", "email"=>"biddr1@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (2.7ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "biddr1"], ["email", "biddr1@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:08.761801"], ["updated_at", "2022-08-23 18:21:08.761801"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 259ms (Views: 2.7ms | ActiveRecord: 8.5ms | Allocations: 16140)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:21:14 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"biddr2", "email"=>"biddr2@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "biddr2"], ["email", "biddr2@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:14.342833"], ["updated_at", "2022-08-23 18:21:14.342833"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 267ms (Views: 0.8ms | ActiveRecord: 0.9ms | Allocations: 2741)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:21:18 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"biddr3", "email"=>"biddr3@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "biddr3"], ["email", "biddr3@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:18.994128"], ["updated_at", "2022-08-23 18:21:18.994128"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 251ms (Views: 0.6ms | ActiveRecord: 1.2ms | Allocations: 2738)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:21:32 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"seller1", "email"=>"seller1@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "seller1"], ["email", "seller1@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:33.205189"], ["updated_at", "2022-08-23 18:21:33.205189"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 271ms (Views: 0.6ms | ActiveRecord: 1.3ms | Allocations: 2742)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:21:37 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"seller2", "email"=>"seller2@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "seller2"], ["email", "seller2@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:37.746047"], ["updated_at", "2022-08-23 18:21:37.746047"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 10], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 260ms (Views: 0.7ms | ActiveRecord: 1.3ms | Allocations: 2744)
+
+
+Started POST "/users" for ::1 at 2022-08-23 11:21:41 -0700
+Processing by UsersController#create as */*
+  Parameters: {"user"=>{"name"=>"seller3", "email"=>"seller3@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Create (0.7ms)[0m  [1m[32mINSERT INTO "users" ("name", "email", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "seller3"], ["email", "seller3@gmail.com"], ["password_digest", "[FILTERED]"], ["created_at", "2022-08-23 18:21:41.525100"], ["updated_at", "2022-08-23 18:21:41.525100"]]
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:9:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 11], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 260ms (Views: 0.6ms | ActiveRecord: 1.2ms | Allocations: 2725)
+
+
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+Started POST "/session" for ::1 at 2022-08-23 11:26:47 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by SessionsController#create as */*
+  Parameters: {"email"=>"seller1@gmail.com", "password"=>"[FILTERED]", "session"=>{"email"=>"seller1@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "seller1@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:3:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 262ms (Views: 4.7ms | ActiveRecord: 8.2ms | Allocations: 16992)
+
+
+Started POST "/auctions" for ::1 at 2022-08-23 11:33:19 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+SyntaxError (/Users/xiaojunlin/Coding/codecore/final_exam/biddr_api/app/controllers/auctions_controller.rb:10: syntax error, unexpected local variable or method, expecting ')'
+                status: 422
+                ^~~~~~
+/Users/xiaojunlin/Coding/codecore/final_exam/biddr_api/app/controllers/auctions_controller.rb:24: syntax error, unexpected end-of-input, expecting `end'):
+  
+app/controllers/auctions_controller.rb:10: syntax error, unexpected local variable or method, expecting ')'
+app/controllers/auctions_controller.rb:24: syntax error, unexpected end-of-input, expecting `end'
+app/controllers/auctions_controller.rb:10: syntax error, unexpected local variable or method, expecting ')'
+app/controllers/auctions_controller.rb:24: syntax error, unexpected end-of-input, expecting `end'
+app/controllers/auctions_controller.rb:10: syntax error, unexpected local variable or method, expecting ')'
+app/controllers/auctions_controller.rb:24: syntax error, unexpected end-of-input, expecting `end'
+Started POST "/auctions" for ::1 at 2022-08-23 11:34:03 -0700
+Processing by AuctionsController#create as */*
+  Parameters: {"auction"=>{"title"=>"Laptop", "description"=>"Well maintained", "reserve_price"=>"900", "end_date"=>"2022-12-01"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mAuction Create (7.7ms)[0m  [1m[32mINSERT INTO "auctions" ("title", "description", "end_date", "reserve_price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Laptop"], ["description", "Well maintained"], ["end_date", "2022-12-01"], ["reserve_price", 900], ["created_at", "2022-08-23 18:34:03.210483"], ["updated_at", "2022-08-23 18:34:03.210483"], ["user_id", 9]]
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 35ms (Views: 1.3ms | ActiveRecord: 17.2ms | Allocations: 24869)
+
+
+  [1m[36mAuction Load (0.8ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" ORDER BY "auctions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Started POST "/auctions" for ::1 at 2022-08-23 11:35:17 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AuctionsController#create as */*
+  Parameters: {"auction"=>{"title"=>"Chair", "description"=>"Well maintained", "reserve_price"=>"55", "end_date"=>"2022-12-01"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mAuction Create (0.6ms)[0m  [1m[32mINSERT INTO "auctions" ("title", "description", "end_date", "reserve_price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Chair"], ["description", "Well maintained"], ["end_date", "2022-12-01"], ["reserve_price", 55], ["created_at", "2022-08-23 18:35:17.641069"], ["updated_at", "2022-08-23 18:35:17.641069"], ["user_id", 9]]
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (5.8ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.05ms)
+Completed 200 OK in 33ms (Views: 1.4ms | ActiveRecord: 17.2ms | Allocations: 24743)
+
+
+Started POST "/auctions" for ::1 at 2022-08-23 11:35:43 -0700
+Processing by AuctionsController#create as */*
+  Parameters: {"auction"=>{"title"=>"Air Conditioner", "description"=>"Well maintained", "reserve_price"=>"399", "end_date"=>"2022-12-01"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 9], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mAuction Create (0.5ms)[0m  [1m[32mINSERT INTO "auctions" ("title", "description", "end_date", "reserve_price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Air Conditioner"], ["description", "Well maintained"], ["end_date", "2022-12-01"], ["reserve_price", 399], ["created_at", "2022-08-23 18:35:43.665399"], ["updated_at", "2022-08-23 18:35:43.665399"], ["user_id", 9]]
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/auctions_controller.rb:5:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.06ms)
+Completed 200 OK in 10ms (Views: 0.4ms | ActiveRecord: 1.2ms | Allocations: 2722)
+
+
+Started POST "/session" for ::1 at 2022-08-23 11:39:15 -0700
+Processing by SessionsController#create as */*
+  Parameters: {"email"=>"biddr1@gmail.com", "password"=>"[FILTERED]", "session"=>{"email"=>"biddr1@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "biddr1@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:3:in `create'
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 264ms (Views: 0.9ms | ActiveRecord: 1.4ms | Allocations: 1553)
+
+
+Started POST "/auctions/1/bids" for ::1 at 2022-08-23 11:40:30 -0700
+  
+NameError (undefined local variable or method `params' for BidsController:Class):
+  
+app/controllers/bids_controller.rb:2:in `<class:BidsController>'
+app/controllers/bids_controller.rb:1:in `<main>'
+Started POST "/auctions/1/bids" for ::1 at 2022-08-23 11:58:02 -0700
+  
+NameError (undefined local variable or method `params' for BidsController:Class):
+  
+app/controllers/bids_controller.rb:2:in `<class:BidsController>'
+app/controllers/bids_controller.rb:1:in `<main>'
+Started POST "/auctions/1/bids" for ::1 at 2022-08-23 11:58:37 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+NameError (undefined local variable or method `params' for BidsController:Class):
+  
+app/controllers/bids_controller.rb:2:in `<class:BidsController>'
+app/controllers/bids_controller.rb:1:in `<main>'
+Started POST "/auctions/2/bids" for ::1 at 2022-08-23 12:03:16 -0700
+  
+NameError (undefined local variable or method `params' for BidsController:Class):
+  
+app/controllers/bids_controller.rb:2:in `<class:BidsController>'
+app/controllers/bids_controller.rb:1:in `<main>'
+Started POST "/auctions/2/bids" for ::1 at 2022-08-23 12:10:36 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BidsController#create as */*
+  Parameters: {"bid"=>{"price"=>"700"}, "auction_id"=>"2"}
+  [1m[36mAuction Load (0.4ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/bids_controller.rb:6:in `create'
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mBid Create (3.0ms)[0m  [1m[32mINSERT INTO "bids" ("auction_id", "price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["auction_id", 2], ["price", 700], ["created_at", "2022-08-23 19:10:36.605841"], ["updated_at", "2022-08-23 19:10:36.605841"], ["user_id", 6]]
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 45ms (Views: 1.4ms | ActiveRecord: 24.5ms | Allocations: 31637)
+
+
+Started POST "/auctions/1/bids" for ::1 at 2022-08-23 12:11:03 -0700
+Processing by BidsController#create as */*
+  Parameters: {"bid"=>{"price"=>"800"}, "auction_id"=>"1"}
+  [1m[36mAuction Load (0.7ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/bids_controller.rb:6:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mBid Create (0.6ms)[0m  [1m[32mINSERT INTO "bids" ("auction_id", "price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["auction_id", 1], ["price", 800], ["created_at", "2022-08-23 19:11:03.160947"], ["updated_at", "2022-08-23 19:11:03.160947"], ["user_id", 6]]
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.8ms | Allocations: 3101)
+
+
+Started POST "/auctions/3/bids" for ::1 at 2022-08-23 12:11:38 -0700
+Processing by BidsController#create as */*
+  Parameters: {"bid"=>{"price"=>"350"}, "auction_id"=>"3"}
+  [1m[36mAuction Load (0.4ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/bids_controller.rb:6:in `create'
+  [1m[36mUser Load (2.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (3.6ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mBid Create (0.6ms)[0m  [1m[32mINSERT INTO "bids" ("auction_id", "price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["auction_id", 3], ["price", 350], ["created_at", "2022-08-23 19:11:38.016264"], ["updated_at", "2022-08-23 19:11:38.016264"], ["user_id", 6]]
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/bids_controller.rb:9:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 15ms (Views: 0.2ms | ActiveRecord: 7.5ms | Allocations: 3074)
+
+
+  [1m[36mBid Load (1.4ms)[0m  [1m[34mSELECT "bids".* FROM "bids"[0m
+  [1m[36mAuction Load (0.7ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" ORDER BY "auctions"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mBid Load (2.7ms)[0m  [1m[34mSELECT "bids".* FROM "bids" WHERE "bids"."auction_id" = $1[0m  [["auction_id", 1]]
+Started GET "/rails/info/routes" for ::1 at 2022-08-23 12:21:18 -0700
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::InfoController#routes as HTML
+  Rendering layout /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/layouts/application.html.erb
+  Rendering /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application
+  Rendered collection of /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/actionpack-7.0.3.1/lib/action_dispatch/middleware/templates/routes/_route.html.erb [38 times] (Duration: 3.4ms | Allocations: 6308)
+  Rendered /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/actionpack-7.0.3.1/lib/action_dispatch/middleware/templates/routes/_table.html.erb (Duration: 1.7ms | Allocations: 1373)
+  Rendered /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/rails/info/routes.html.erb within layouts/application (Duration: 7.4ms | Allocations: 11773)
+  Rendered layout /Users/xiaojunlin/.rvm/gems/ruby-3.0.0/gems/railties-7.0.3.1/lib/rails/templates/layouts/application.html.erb (Duration: 8.0ms | Allocations: 12124)
+Completed 200 OK in 14ms (Views: 10.0ms | ActiveRecord: 0.0ms | Allocations: 17567)
+
+
+Started DELETE "/session" for ::1 at 2022-08-23 12:22:12 -0700
+Processing by SessionsController#destroy as */*
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.05ms)
+Completed 200 OK in 27ms (Views: 11.3ms | ActiveRecord: 13.0ms | Allocations: 9200)
+
+
+Started POST "/auctions" for ::1 at 2022-08-23 12:22:51 -0700
+Processing by AuctionsController#create as */*
+  Parameters: {"auction"=>{"title"=>"Sofa", "description"=>"Well maintained", "reserve_price"=>"99", "end_date"=>"2022-12-01"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+Redirected to http://localhost:3000/auctions
+Filter chain halted as :authenticate_user! rendered or redirected
+Completed 302 Found in 4ms (ActiveRecord: 0.5ms | Allocations: 1092)
+
+
+Started GET "/auctions" for ::1 at 2022-08-23 12:22:51 -0700
+Processing by AuctionsController#index as */*
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mAuction Load (5.2ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" ORDER BY "auctions"."created_at" DESC[0m
+  ↳ app/controllers/auctions_controller.rb:25:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.29ms)
+Completed 200 OK in 33ms (Views: 9.3ms | ActiveRecord: 18.8ms | Allocations: 10684)
+
+
+Started POST "/auctions/3/bids" for ::1 at 2022-08-23 12:24:05 -0700
+Processing by BidsController#create as */*
+  Parameters: {"bid"=>{"price"=>"360"}, "auction_id"=>"3"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+Redirected to http://localhost:3000/auctions
+Filter chain halted as :authenticate_user! rendered or redirected
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms | Allocations: 1005)
+
+
+Started GET "/auctions" for ::1 at 2022-08-23 12:24:05 -0700
+Processing by AuctionsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mAuction Load (0.2ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" ORDER BY "auctions"."created_at" DESC[0m
+  ↳ app/controllers/auctions_controller.rb:25:in `index'
+[active_model_serializers] Rendered ActiveModel::Serializer::CollectionSerializer with ActiveModelSerializers::Adapter::Attributes (0.24ms)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.5ms | Allocations: 1988)
+
+
+Started POST "/session" for ::1 at 2022-08-23 12:24:18 -0700
+Processing by SessionsController#create as */*
+  Parameters: {"email"=>"biddr2@gmail.com", "password"=>"[FILTERED]", "session"=>{"email"=>"biddr2@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "biddr2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:3:in `create'
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 274ms (Views: 1.9ms | ActiveRecord: 1.8ms | Allocations: 5454)
+
+
+Started POST "/auctions/3/bids" for ::1 at 2022-08-23 12:24:26 -0700
+Processing by BidsController#create as */*
+  Parameters: {"bid"=>{"price"=>"360"}, "auction_id"=>"3"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mAuction Load (0.2ms)[0m  [1m[34mSELECT "auctions".* FROM "auctions" WHERE "auctions"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/bids_controller.rb:7:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/bids_controller.rb:10:in `create'
+  [1m[36mBid Create (1.1ms)[0m  [1m[32mINSERT INTO "bids" ("auction_id", "price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["auction_id", 3], ["price", 360], ["created_at", "2022-08-23 19:24:26.291515"], ["updated_at", "2022-08-23 19:24:26.291515"], ["user_id", 7]]
+  ↳ app/controllers/bids_controller.rb:10:in `create'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/bids_controller.rb:10:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 27ms (Views: 0.3ms | ActiveRecord: 13.0ms | Allocations: 10381)
+
+
+Started POST "/session" for ::1 at 2022-08-23 12:24:45 -0700
+Processing by SessionsController#create as */*
+  Parameters: {"email"=>"seller2@gmail.com", "password"=>"[FILTERED]", "session"=>{"email"=>"seller2@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (4.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "seller2@gmail.com"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:3:in `create'
+  [1m[36mUser Load (2.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 10], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.03ms)
+Completed 200 OK in 277ms (Views: 0.8ms | ActiveRecord: 7.0ms | Allocations: 1431)
+
+
+Started POST "/auctions" for ::1 at 2022-08-23 12:24:55 -0700
+Processing by AuctionsController#create as */*
+  Parameters: {"auction"=>{"title"=>"Sofa", "description"=>"Well maintained", "reserve_price"=>"99", "end_date"=>"2022-12-01"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 10], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:5:in `current_user'
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/auctions_controller.rb:8:in `create'
+  [1m[36mAuction Create (1.1ms)[0m  [1m[32mINSERT INTO "auctions" ("title", "description", "end_date", "reserve_price", "created_at", "updated_at", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Sofa"], ["description", "Well maintained"], ["end_date", "2022-12-01"], ["reserve_price", 99], ["created_at", "2022-08-23 19:24:55.389434"], ["updated_at", "2022-08-23 19:24:55.389434"], ["user_id", 10]]
+  ↳ app/controllers/auctions_controller.rb:8:in `create'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/auctions_controller.rb:8:in `create'
+[active_model_serializers] Rendered ActiveModel::Serializer::Null with Hash (0.04ms)
+Completed 200 OK in 14ms (Views: 0.3ms | ActiveRecord: 4.4ms | Allocations: 3380)
+
+
