@@ -5,6 +5,7 @@ import AuctionIndexPage from './components/AuctionIndexPage';
 import SignInPage from './components/SignInPage';
 import SignUpPage from './components/SignUpPage';
 import AuctionNewPage from './components/AuctionNewPage';
+import AuthRoute from './components/AuthRoute';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import NavBar from './components/NavBar';
 import {useState, useEffect} from 'react'
@@ -41,7 +42,9 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomPage />}/>
         <Route path="/auctions" element={<AuctionIndexPage />}/>
-        <Route path="/auctions/new" element={<AuctionNewPage />}/>
+        <Route path="/auctions/new" element={<AuthRoute isAllowed={!!user} component={<AuctionNewPage />}/>}>
+          
+        </Route>
         <Route path="/auctions/:id" element={<AuctionShowPage />}/>
         <Route path="/sign_in" element={<SignInPage logInUser={logInUser}/>}/>
         <Route path="/sign_up" element={<SignUpPage />}/>
