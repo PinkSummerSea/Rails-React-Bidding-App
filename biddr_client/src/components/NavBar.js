@@ -2,7 +2,18 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-const NavBar = () => {
+const NavBar = ({user, logUserOut}) => {
+
+  const handleClick =()=>{
+    axios.delete("http://localhost:3000/session", { withCredentials: true })
+      .then(res => {
+        if(res.data.logged_out) {
+          console.log(res)
+          logUserOut()
+        }
+      })
+  }
+
   return (
     <div>
         <nav style={{
@@ -13,9 +24,9 @@ const NavBar = () => {
             <span> </span>
             <Link to="/auctions">Auctions</Link>
             <span> </span>
-            <Link to="/sign_in">Sign In</Link>
-            {/* { user.id && <span> {user.email} </span>}
-            { user.id && <button onClick={()=>{handleClick()}}>Logout</button>} */}
+            { !user && <Link to="/sign_in">Sign In</Link>}
+            { user && <span> {user.name} </span>}
+            { user && <button onClick={()=>{handleClick()}}>Logout</button>} 
         </nav>
     </div>
   )

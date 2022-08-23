@@ -1,6 +1,17 @@
 class UsersController < ApplicationController
+
+    include CurrentUserConcern
+
     def current
-        render json: current_user
+        if @current_user
+            render json: {
+                user: @current_user
+            }
+        else  
+            render json: {
+                user: nil
+            }
+        end
     end
 
     def create

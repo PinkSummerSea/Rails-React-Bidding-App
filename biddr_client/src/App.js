@@ -6,16 +6,42 @@ import SignInPage from './components/SignInPage';
 import SignUpPage from './components/SignUpPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import NavBar from './components/NavBar';
+import {useState, useEffect} from 'react'
+import axios from 'axios';
+
 
 function App() {
+
+  const [user, setUser] = useState(null)
+  const checkLoginStatus = () => {
+    axios.get("http://localhost:3000/users/current", { withCredentials: true})
+      .then(res => {
+        if(res.data.user?.id) {
+          setUser(res.data.user)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+  useEffect(checkLoginStatus, [])
+
+  const logInUser = (u) => {
+    setUser(u)
+  }
+
+  const logUserOut = () => {
+    setUser(null)
+  }
+
+
   return (
     <BrowserRouter>
-      <NavBar />
+      <NavBar user={user} logUserOut={logUserOut}/>
       <Routes>
         <Route path="/" element={<WelcomPage />}/>
         <Route path="/auctions" element={<AuctionIndexPage />}/>
         <Route path="/auctions/:id" element={<AuctionShowPage />}/>
-        <Route path="/sign_in" element={<SignInPage />}/>
+        <Route path="/sign_in" element={<SignInPage logInUser={logInUser}/>}/>
         <Route path="/sign_up" element={<SignUpPage />}/>
       </Routes>
     </BrowserRouter>
