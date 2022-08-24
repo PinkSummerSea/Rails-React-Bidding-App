@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#welcome"
   
-  resources :auctions, only: [:create, :show, :index] do
+  resources :auctions, only: [:create, :show, :index, :update] do
     resources :bids, only: [:create]
   end
   resource :session, only: [:create, :destroy]

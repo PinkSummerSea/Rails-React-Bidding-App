@@ -26,4 +26,13 @@ class AuctionsController < ApplicationController
         auctions = Auction.order created_at: :desc
         render(json: auctions, each_serializer: AuctionCollectionSerializer)
     end
+
+    def update
+        auction = Auction.find params[:id]
+        if auction.update(params.require(:auction).permit!)
+            render(json: auction)
+        else  
+            render(json: {errors: auction.errors.messages})
+        end
+    end
 end

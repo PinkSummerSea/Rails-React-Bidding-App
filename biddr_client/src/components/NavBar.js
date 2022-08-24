@@ -31,7 +31,7 @@ const NavBar = ({user, logUserOut}) => {
             <span> </span>
             { user && <span> Hi, {user.name} </span>}
             <span> </span>
-            { user && <button onClick={()=>{handleClick()}}>Logout</button>} 
+            { user && <button className='btn btn-primary m-3' onClick={()=>{handleClick()}}>Logout</button>} 
         </nav>
     </div>
   )

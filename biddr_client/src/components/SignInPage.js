@@ -40,6 +40,7 @@ const SignInPage = ({logInUser}) => {
   return (
     <>
         <form onSubmit={handleSubmit}>
+            <label>Email*</label>
             <input 
                 type="email" 
                 name="email" 
@@ -48,6 +49,8 @@ const SignInPage = ({logInUser}) => {
                 onChange={handleChange} 
                 required 
             />
+            <br />
+            <label>Password*</label>
             <input 
                 type="password" 
                 name="password" 
@@ -57,7 +60,7 @@ const SignInPage = ({logInUser}) => {
                 required 
             />
             
-            <button type="submit">Login</button>
+            <button className='btn btn-primary m-3' type="submit">Login</button>
 
         </form>
     </>

@@ -10,6 +10,7 @@ const AuctionShowPage = ({user}) => {
   const [bids, setBids] = useState([])
   const [priceMet, setPriceMet] = useState("not met")
   const [newBidPrice, setNewBidPrice] = useState()
+  const [published, setPublished] = useState(false)
 
   let {id} = useParams()
   let navigate = useNavigate()
@@ -23,7 +24,17 @@ const AuctionShowPage = ({user}) => {
   }, [])
 
   useEffect(() => {
-    Math.max(...bids.map(b => b.price)) >= auction.reserve_price && setPriceMet("has been met") 
+    if(user && Math.max(...bids.map(b => b.price)) >= auction.reserve_price) {
+      axios.put(`http://localhost:3000/auctions/${id}`, {
+        auction:{
+          reserve_met: true
+        }
+    }, {withCredentials: true})
+      .then(res => {
+        console.log(res.data)
+        setPriceMet("has been met") 
+      })
+    }
   }, [auction, bids])
 
   const handleChange = (event) => {
@@ -40,7 +51,7 @@ const AuctionShowPage = ({user}) => {
       }
     }, {withCredentials: true})
       .then(res => {
-        console.log(res)
+        //console.log(res)
         setBids([res.data.bid, ...bids])
       })
     } else {
@@ -48,22 +59,38 @@ const AuctionShowPage = ({user}) => {
     }
     
   }
+
+  const handleClick = () => {
+    axios.put(`http://localhost:3000/auctions/${id}`, {
+        auction:{
+          published: true,
+          draft: false
+        }
+    }, {withCredentials: true})
+      .then(res => {
+        console.log(res.data)
+        setPublished(true)
+      })
+  }
   
   return (
     <>
         <h1>{auction.title}</h1>
+        {auction.user && auction.user.id === user?.id && (!published) && auction.draft && <button onClick={handleClick} className='btn btn-primary m-3'>Publish</button>}
         <p>{auction.description}</p>
+        <h3>Seller: {auction.user?.name}</h3>
         <h3>Ends at: {dateFormat(auction.end_date, "mmmm dS, yyyy")}</h3>
         <h3>Reserve Price: ${auction.reserve_price}</h3>
         <h3>Reserve Price {priceMet}</h3>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={(auction && published)? handleSubmit:undefined}> */}
+        <form onSubmit={(auction?.published || published)? handleSubmit:undefined}>
           <input 
             name="price"
             type="text"
             onChange={handleChange}
             required
           />
-          <button type="submit">Bid</button>
+          <button className='btn btn-primary m-3' type="submit">Bid</button>
         </form>
         <h5>Previous Bids</h5>
         {bids.map(b => (

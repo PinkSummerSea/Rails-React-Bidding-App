@@ -86,7 +86,7 @@ const SignUpPage = ({logInUser}) => {
                 required 
             />
             <br/>
-            <button type="submit">Sign Up</button>
+            <button className='btn btn-primary m-3' type="submit">Sign Up</button>
         </form>
     </>
   )

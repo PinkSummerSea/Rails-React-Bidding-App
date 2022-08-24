@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 function App() {
-
+  
   const [user, setUser] = useState(null)
   const checkLoginStatus = () => {
     axios.get("http://localhost:3000/users/current", { withCredentials: true})
@@ -41,11 +41,11 @@ function App() {
       <NavBar user={user} logUserOut={logUserOut}/>
       <Routes>
         <Route path="/" element={<WelcomPage />}/>
-        <Route path="/auctions" element={<AuctionIndexPage />}/>
+        <Route path="/auctions" element={<AuctionIndexPage user={user}/>}/>
         <Route path="/auctions/new" element={<AuthRoute isAllowed={!!user} component={<AuctionNewPage />}/>}>
-          
         </Route>
         <Route path="/auctions/:id" element={<AuctionShowPage user={user}/>}/>
+       
         <Route path="/sign_in" element={<SignInPage logInUser={logInUser}/>}/>
         <Route path="/sign_up" element={<SignUpPage logInUser={logInUser}/>}/>
       </Routes>

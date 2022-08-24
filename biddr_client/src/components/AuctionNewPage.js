@@ -69,7 +69,7 @@ const AuctionNewPage = () => {
                 required
             />
             <br/>
-            <button type="submit">Save</button>
+            <button type="submit" className='btn btn-primary m-3'>Save</button>
         </form>
     </>
   )
