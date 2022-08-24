@@ -47,7 +47,7 @@ function App() {
         </Route>
         <Route path="/auctions/:id" element={<AuctionShowPage />}/>
         <Route path="/sign_in" element={<SignInPage logInUser={logInUser}/>}/>
-        <Route path="/sign_up" element={<SignUpPage />}/>
+        <Route path="/sign_up" element={<SignUpPage logInUser={logInUser}/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -25,8 +25,12 @@ const NavBar = ({user, logUserOut}) => {
             <Link to="/auctions">Auctions</Link>
             <span> </span>
             { !user && <Link to="/sign_in">Sign In</Link>}
+            <span> </span>
+            { !user && <Link to="/sign_up">Sign Up</Link>}
             { user && <Link to="/auctions/new">Create New Auction</Link>}
+            <span> </span>
             { user && <span> Hi, {user.name} </span>}
+            <span> </span>
             { user && <button onClick={()=>{handleClick()}}>Logout</button>} 
         </nav>
     </div>
