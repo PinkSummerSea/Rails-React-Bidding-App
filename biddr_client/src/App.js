@@ -45,7 +45,7 @@ function App() {
         <Route path="/auctions/new" element={<AuthRoute isAllowed={!!user} component={<AuctionNewPage />}/>}>
           
         </Route>
-        <Route path="/auctions/:id" element={<AuctionShowPage />}/>
+        <Route path="/auctions/:id" element={<AuctionShowPage user={user}/>}/>
         <Route path="/sign_in" element={<SignInPage logInUser={logInUser}/>}/>
         <Route path="/sign_up" element={<SignUpPage logInUser={logInUser}/>}/>
       </Routes>

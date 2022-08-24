@@ -2,8 +2,9 @@ import {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import dateFormat from 'dateformat'
+import { useNavigate } from 'react-router-dom'
 
-const AuctionShowPage = () => {
+const AuctionShowPage = ({user}) => {
 
   const [auction, setAuction] = useState({})
   const [bids, setBids] = useState([])
@@ -11,6 +12,7 @@ const AuctionShowPage = () => {
   const [newBidPrice, setNewBidPrice] = useState()
 
   let {id} = useParams()
+  let navigate = useNavigate()
 
   useEffect(() => {
     axios.get(`http://localhost:3000/auctions/${id}`, {withCredentials: true})
@@ -30,7 +32,9 @@ const AuctionShowPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    axios.post(`http://localhost:3000/auctions/${id}/bids`,{
+
+    if (user) {
+      axios.post(`http://localhost:3000/auctions/${id}/bids`,{
       bid: {
         price: newBidPrice
       }
@@ -39,6 +43,10 @@ const AuctionShowPage = () => {
         console.log(res)
         setBids([res.data.bid, ...bids])
       })
+    } else {
+      navigate('/sign_in', {replace: true})
+    }
+    
   }
   
   return (
